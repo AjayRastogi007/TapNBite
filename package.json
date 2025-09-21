@@ -2,12 +2,12 @@
   "dependencies": {
     "parcel": "^2.15.4",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^6.30.1"
   },
   "name": "tapnbite",
   "version": "1.0.0",
   "description": "TapNBite is a modern food ordering and delivery application built using React (frontend) and Spring Boot (backend). It provides users with a seamless experience to browse restaurants, explore menus, place orders.",
-  "devDependencies": {},
   "scripts": {
     "test": "jest",
     "start": "parcel src/index.html",
