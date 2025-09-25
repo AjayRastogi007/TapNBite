@@ -2,6 +2,7 @@ import RestaurantCard from './RestaurantCard';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Shimmer from './Shimmer';
+import useOnlineStatus from '../utils/useOnlineStatus';
 
 const Body = () => {
 
@@ -24,19 +25,27 @@ const Body = () => {
         setFilteredRestraunt(json?.data?.cards.slice(3));
     }
 
+    const onlineStatus = useOnlineStatus();
+
+    if (onlineStatus === false) {
+        return (
+            <h1>Looks like you are offline. Please check your internet connectivity.</h1>
+        );
+    }
+
     return listOfRestraunts.length === 0 ? <Shimmer /> : (
         <div className='body'>
-            <div className='filter'>
-                <div className='search'>
+            <div className='filter flex'>
+                <div className='search m-4 p-4'>
                     <input
                         type='text'
-                        className='search-box'
+                        className='border border-solid border-black'
                         value={searchText}
                         onChange={(e) => {
                             setSearchText(e.target.value);
                         }
                         }></input>
-                    <button
+                    <button className='px-4 py-2 bg-green-100 m-4 rounded-lg'
                         onClick={() => {
                             const filteredRestraunt = listOfRestraunts.filter((res) =>
                                 res.card.card.info.name.toLowerCase().includes(searchText.toLowerCase())
@@ -45,17 +54,19 @@ const Body = () => {
                             setFilteredRestraunt(filteredRestraunt);
                         }}>Search</button>
                 </div>
-                <button
-                    className='filter-btn'
-                    onClick={() => {
-                        const filteredList = listOfRestraunts.filter(
-                            (res) => res.card.card.info.avgRating > 4.5
-                        );
-                        setListOfRestraunts(filteredList);
-                    }}
-                >Top Rated Restraunts</button>
+                <div className='search m-4 p-4 flex items-center'>
+                    <button
+                        className='px-4 py-2 bg-gray-100 rounded-lg'
+                        onClick={() => {
+                            const filteredList = listOfRestraunts.filter(
+                                (res) => res.card.card.info.avgRating > 4.5
+                            );
+                            setListOfRestraunts(filteredList);
+                        }}
+                    >Top Rated Restraunts</button>
+                </div>
             </div>
-            <div className='res-container'>
+            <div className='flex flex-wrap'>
                 {
                     filteredRestraunt.map((restraunt) => (
                         <Link
